@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="app">
+        <!-- Login View -->
+        <div id="login-view" class="container hidden">
+            <div class="glass-panel auth-container">
+                <h1 class="auth-title">Welcome Back</h1>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%">Sign In</button>
+                    <p class="text-center mt-4">
+                        <a href="#" id="show-register" style="color: var(--secondary)">Need an account?</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+
+        <!-- Register View -->
+        <div id="register-view" class="container hidden">
+            <div class="glass-panel auth-container">
+                <h1 class="auth-title">Create Account</h1>
+                <form id="register-form">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="reg-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="reg-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" id="reg-password" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Department</label>
+                        <input type="text" class="form-control" id="reg-dept" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Designation</label>
+                        <input type="text" class="form-control" id="reg-designation" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Salary</label>
+                        <input type="number" class="form-control" id="reg-salary" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Role</label>
+                        <select class="form-control" id="reg-role">
+                            <option value="Employee">Employee</option>
+                            <option value="HR">HR</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%">Register</button>
+                    <p class="text-center mt-4">
+                        <a href="#" id="show-login" style="color: var(--secondary)">Already have an account?</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+
+        <!-- Dashboard Layout -->
+        <div id="dashboard-layout" class="hidden">
+            <nav class="glass-panel">
+                <div class="logo">EMS Pro</div>
+
+                <ul class="nav-links" id="nav-links">
+                    <!-- HR Links -->
+                    <li class="nav-item hidden" data-role="HR"><a href="#" data-view="hr-dashboard"
+                            class="active">Dashboard</a></li>
+                    <li class="nav-item hidden" data-role="HR"><a href="#" data-view="hr-leaves">Leave Requests</a></li>
+
+                    <!-- Employee Links -->
+                    <li class="nav-item hidden" data-role="Employee"><a href="#" data-view="emp-dashboard"
+                            class="active">Dashboard</a></li>
+                    <li class="nav-item hidden" data-role="Employee"><a href="#" data-view="emp-apply">Apply Leave</a>
+                    </li>
+                    <li class="nav-item hidden" data-role="Employee"><a href="#" data-view="emp-history">My History</a>
+                    </li>
+                </ul>
+
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <span id="user-name">User</span>
+                    <button id="logout-btn" class="btn btn-danger">Logout</button>
+                </div>
+            </nav>
+
+            <div class="container">
+                <!-- HR Views -->
+                <div id="view-hr-dashboard" class="view-section hidden">
+                    <div class="dashboard-grid">
+                        <div class="glass-panel stat-card">
+                            <div class="stat-title">Total Employees</div>
+                            <div class="stat-value" id="total-employees">0</div>
+                        </div>
+                        <div class="glass-panel stat-card">
+                            <div class="stat-title">Pending Leaves</div>
+                            <div class="stat-value" id="pending-leaves-count">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="view-hr-leaves" class="view-section hidden">
+                    <div class="glass-panel" style="padding: 2rem; margin-bottom: 2rem;">
+                        <h2 class="mb-4" style="color: var(--warning)">Pending Requests</h2>
+                        <div class="table-container">
+                            <table id="leaves-pending-table">
+                                <thead>
+                                    <tr>
+                                        <th>Employee</th>
+                                        <th>Type</th>
+                                        <th>Dates</th>
+                                        <th>Reason</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="leaves-pending-body">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel" style="padding: 2rem;">
+                        <h2 class="mb-4">Leave History</h2>
+                        <div class="table-container">
+                            <table id="leaves-history-table">
+                                <thead>
+                                    <tr>
+                                        <th>Employee</th>
+                                        <th>Type</th>
+                                        <th>Dates</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="leaves-history-body">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Employee Views -->
+                <div id="view-emp-dashboard" class="view-section hidden">
+                    <div class="dashboard-grid">
+                        <div class="glass-panel stat-card">
+                            <div class="stat-title">Attendance Status</div>
+                            <div class="stat-value" id="attendance-status">Not Marked</div>
+                            <button class="btn btn-primary mt-4" id="mark-attendance-btn">Check In</button>
+                        </div>
+                        <div class="glass-panel stat-card">
+                            <div class="stat-title">Leave Balance</div>
+                            <div class="stat-value">12 Days</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="view-emp-apply" class="view-section hidden">
+                    <div class="glass-panel" style="padding: 2rem; max-width: 800px; margin: 0 auto;">
+                        <h2 class="mb-4">Apply for Leave</h2>
+                        <form id="leave-form">
+                            <div class="form-group">
+                                <label class="form-label">Leave Type</label>
+                                <select class="form-control" id="leave-type">
+                                    <option value="Sick">Sick Leave</option>
+                                    <option value="Casual">Casual Leave</option>
+                                    <option value="Vacation">Vacation</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; gap: 1rem;">
+                                <div class="form-group" style="flex:1">
+                                    <label class="form-label">Start Date</label>
+                                    <input type="date" class="form-control" id="leave-start" required>
+                                </div>
+                                <div class="form-group" style="flex:1">
+                                    <label class="form-label">End Date</label>
+                                    <input type="date" class="form-control" id="leave-end" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Reason</label>
+                                <textarea class="form-control" id="leave-reason" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Request</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="view-emp-history" class="view-section hidden">
+                    <div class="glass-panel" style="padding: 2rem; margin-bottom: 2rem;">
+                        <h2 class="mb-4" style="color: var(--warning)">Pending Applications</h2>
+                        <div class="table-container">
+                            <table id="emp-pending-table">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Dates</th>
+                                        <th>Reason</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="emp-pending-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel" style="padding: 2rem;">
+                        <h2 class="mb-4">Processed Leaves (Accepted/Rejected)</h2>
+                        <div class="table-container">
+                            <table id="emp-processed-table">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Dates</th>
+                                        <th>Reason</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="emp-processed-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">Action Saved</div>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
